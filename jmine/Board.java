@@ -1,24 +1,13 @@
 package jmine;
 
-import java.awt.Graphics;
-import java.awt.Image;
-
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
 
 class Board extends JPanel {
 
@@ -52,7 +41,6 @@ class Board extends JPanel {
 
     private int all_cells;
     private JLabel statusbar;
-    private JMenuBar menuBar;
     time runner; // reading the timer from time.java class
     int scounter=0; // counting walking on the small mines
     boolean solving_mode = false;
@@ -65,7 +53,7 @@ class Board extends JPanel {
         runner = run;
         N_MINES = nmin;
         System.out.println("Small Mine="+N_SMALL_MINES);
-        small_mine_random=random(N_MINES, N_SMALL_MINES);
+        //small_mine_random=random(N_MINES, N_SMALL_MINES);
 
         N_ROWS = r;
         N_COLS = c;
@@ -93,6 +81,9 @@ class Board extends JPanel {
         int i;
         int position;
         int cell;
+
+        small_mine_random=random(N_MINES, N_SMALL_MINES);
+        state=0;
 
         random = new Random();
         inGame = true;
@@ -327,8 +318,7 @@ class Board extends JPanel {
             solving_mode = false;
             return;
         }
-        int m;
-        int cell = 0;
+        int cell;
         int uncover = 0;
 
         for (int i = 0; i < N_ROWS; i++) {

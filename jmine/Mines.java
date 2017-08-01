@@ -1,11 +1,12 @@
 package jmine;
 
 import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.swing.border.Border;
 
 public class Mines extends JFrame {
 
