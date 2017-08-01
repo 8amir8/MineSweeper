@@ -60,14 +60,13 @@ class Board extends JPanel {
     int ur = -1, state = 0; // ur is a temo variable to hold the state of the game & State is to hold the position of the game  
     int small_mine_random[]=null; //randomly set the small mines in the field variable
     public Board(JLabel statusbar, String username, int nmin, int r, int c, time run,int smallmine) {
-        N_SMALL_MINES=smallmine;
+        N_SMALL_MINES = smallmine;
 
         runner = run;
         N_MINES = nmin;
         System.out.println("Small Mine="+N_SMALL_MINES);
         small_mine_random=random(N_MINES, N_SMALL_MINES);
 
-        System.out.println("");
         N_ROWS = r;
         N_COLS = c;
         this.statusbar = statusbar;
@@ -91,9 +90,9 @@ class Board extends JPanel {
         Random random;
         int current_col;
 
-        int i = 0;
-        int position = 0;
-        int cell = 0;
+        int i;
+        int position;
+        int cell;
 
         random = new Random();
         inGame = true;
@@ -106,7 +105,7 @@ class Board extends JPanel {
             field[i] = COVER_FOR_CELL;
         }
 
-        statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter);
+        statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter); //place to change if u want to remove extra flag bug
         i = 0;
 
 
@@ -129,7 +128,7 @@ class Board extends JPanel {
                         }
                     }
                     cell = position - 1;
-                    if (cell >= 0) {
+                    if (cell >= 0) {                                               //useless?
                         if (field[cell] != COVERED_MINE_CELL) {
                             field[cell] += 1;
                         }
@@ -170,7 +169,7 @@ class Board extends JPanel {
                         }
                     }
                     cell = position + 1;
-                    if (cell < all_cells) {
+                    if (cell < all_cells) {                                     //useless?
                         if (field[cell] != COVERED_MINE_CELL) {
                             field[cell] += 1;
                         }
@@ -297,14 +296,14 @@ class Board extends JPanel {
     public void paintComponent(Graphics g) {
 
         if (solving_mode) {
-            int cell = 0;
+            int cell;
             for (int i = 0; i < N_ROWS; i++) {
                 for (int j = 0; j < N_COLS; j++) {
 
                     cell = field[(i * N_COLS) + j];
                     if (cell == COVERED_MINE_CELL||cell==SMALL_CELL) {
 
-                        //    System.out.println(position(j, i)+"\t"+small_mine_random[position(j, i)]);
+                            System.out.println(position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         if(small_mine_random[position(j, i)]==1){// finding array of position of mines and small mines
 
                             cell=DRAW_SMALL_MINE_CELL;
@@ -405,7 +404,7 @@ class Board extends JPanel {
     }
 
     public boolean isredoEnable() {
-        return state <= ur;
+        return state < ur;
     }
 
     public void undo() {
@@ -433,11 +432,13 @@ class Board extends JPanel {
         if (!isredoEnable()) {
             return;
         }
-        if (state == tempfield.size() - 1) {
+        /*if (state == tempfield.size() - 1) {
             field = copyarray(tempfield.get(state));
-        } else {
+            System.out.println("1");
+        } else {*/
             field = copyarray(tempfield.get(state + 1));
-        }
+            System.out.println("2");
+        //}
         state++;
         System.out.println("Repaint");
         repaint();
@@ -473,6 +474,7 @@ class Board extends JPanel {
 
                         if (field[(cRow * N_COLS) + cCol] <= COVERED_MINE_CELL) {
                             if (mines_left > 0) {
+                                System.out.println("x = [" + (field[(cRow * N_COLS) + cCol] + MARK_FOR_CELL) + "]");
                                 field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
                                 statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter);
@@ -480,7 +482,7 @@ class Board extends JPanel {
                                 statusbar.setText("No marks left");
                             }
                         } else {
-
+                            System.out.println("e = [" + (field[(cRow * N_COLS) + cCol] - MARK_FOR_CELL) + "]");
                             field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
                             statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter);
@@ -490,7 +492,7 @@ class Board extends JPanel {
                 } else {
 
                     if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
-
+                        System.out.println("wtf");
                         return;
                     }
 
@@ -506,9 +508,9 @@ class Board extends JPanel {
                             if(small_mine_random[position(cCol, cRow)]==1){
                                 field[(cRow * N_COLS) + cCol]=SMALL_CELL;
                                 scounter++;
-                                statusbar.setText("Hey mate !!! Be Carefulllllll... you Just walk over "+(scounter)+" small mine/s.");
+                                statusbar.setText("Hey mate ! Be Careful... you Just walk over "+(scounter)+" small mine/s.");
                                 if(scounter==3){/*counting 3 walking steps on the mines */
-                                    statusbar.setText("I'm Really Sorry Mate  , you walked over small mine for 3rd time !!!!");
+                                    statusbar.setText("I'm Really Sorry Mate , you walked over small mine for 3rd time!");
                                     inGame = false;
                                 }
                             }else{
@@ -529,8 +531,7 @@ class Board extends JPanel {
 
             }
             state++;
-            int newdest[] = null;
-            newdest = copyarray(field);
+            int newdest[] = copyarray(field);
             tempfield.add(state, newdest);
 
             ur = state;

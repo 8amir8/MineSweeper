@@ -3,8 +3,6 @@ package jmine;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.io.*;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.border.Border;
@@ -42,8 +40,7 @@ public class Mines extends JFrame {
             public void actionPerformed(ActionEvent e){
                 myBoard.newGame();
                 myBoard.repaint();
-                t.start=0;
-                t.stoptime=false;
+                t.restart();
                 runner.execute(t);
             }
         });
@@ -94,8 +91,7 @@ public class Mines extends JFrame {
         solution.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 myBoard.solve();
-                t.stoptime=true;
-                t.start=0;
+                t.stop();
             }
         });
 
@@ -151,8 +147,7 @@ public class Mines extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 myBoard.newGame();
                 myBoard.repaint();
-                t.start=0;
-                t.stoptime=false;
+                t.restart();
                 runner.execute(t);
             }
         });

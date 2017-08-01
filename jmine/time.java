@@ -18,6 +18,10 @@ public class time implements Runnable {
     stoptime = true;
     start = 0;
   }
+  public void restart() {
+    start=0;
+    stoptime=false;
+  }
 
   public void run() {
     while (!stoptime) {
