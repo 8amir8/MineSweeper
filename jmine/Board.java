@@ -52,7 +52,7 @@ class Board extends JPanel {
 
         runner = run;
         N_MINES = nmin;
-        System.out.println("Small Mine="+N_SMALL_MINES);
+        //System.out.println("Small Mine="+N_SMALL_MINES);
         //small_mine_random=random(N_MINES, N_SMALL_MINES);
 
         N_ROWS = r;
@@ -293,7 +293,7 @@ class Board extends JPanel {
                     cell = field[(i * N_COLS) + j];
                     if (cell == COVERED_MINE_CELL||cell==SMALL_CELL) {
 
-                            System.out.println(position(j, i)+"\t"+small_mine_random[position(j, i)]);
+                            //System.out.println(position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         if(small_mine_random[position(j, i)]==1){// finding array of position of mines and small mines
 
                             cell=DRAW_SMALL_MINE_CELL;
@@ -332,7 +332,7 @@ class Board extends JPanel {
 
                 if (!inGame) {
                     if (cell == COVERED_MINE_CELL||cell==SMALL_CELL) {
-                        System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
+                        //System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         if(small_mine_random[position(j, i)]==1){
 
                             cell=DRAW_SMALL_MINE_CELL;
@@ -355,7 +355,7 @@ class Board extends JPanel {
                         cell = DRAW_COVER;
                         uncover++;
                     } else if(cell==SMALL_CELL) {
-                        System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
+                        //System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
 
 
                         cell=DRAW_SMALL_MINE_CELL;
@@ -423,7 +423,7 @@ class Board extends JPanel {
             System.out.println("1");
         } else {*/
             field = copyarray(tempfield.get(state + 1));
-            System.out.println("2");
+            //System.out.println("2");
         //}
         state++;
         System.out.println("Repaint");
@@ -460,7 +460,7 @@ class Board extends JPanel {
 
                         if (field[(cRow * N_COLS) + cCol] <= COVERED_MINE_CELL) {
                             if (mines_left > 0) {
-                                System.out.println("x = [" + (field[(cRow * N_COLS) + cCol] + MARK_FOR_CELL) + "]");
+                                //System.out.println("x = [" + (field[(cRow * N_COLS) + cCol] + MARK_FOR_CELL) + "]");
                                 field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
                                 statusbar.setText(Integer.toString(mines_left)+" with small mine left="+(3-scounter));
@@ -468,7 +468,7 @@ class Board extends JPanel {
                                 statusbar.setText("No marks left");
                             }
                         } else {
-                            System.out.println("e = [" + (field[(cRow * N_COLS) + cCol] - MARK_FOR_CELL) + "]");
+                            //System.out.println("e = [" + (field[(cRow * N_COLS) + cCol] - MARK_FOR_CELL) + "]");
                             field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
                             statusbar.setText(Integer.toString(mines_left)+" with small mine left="+(3-scounter));
@@ -478,7 +478,7 @@ class Board extends JPanel {
                 } else {
 
                     if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
-                        System.out.println("wtf");
+                        //System.out.println("wtf");
                         return;
                     }
 
