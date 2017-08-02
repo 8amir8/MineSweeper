@@ -9,10 +9,10 @@ public class HexBoard extends Board {
         super(statusbar, username, nmin, r, c, run, smallmine);
 
         img = new Image[NUM_IMAGES];
-        //CELL_SIZE = 20;
+        CELL_SIZE = 24;
         G_MODE="hexagon";
         for (int i = 0; i < NUM_IMAGES; i++) {
-            img[i] = (new ImageIcon("./img/HeX2/i"+ i + ".png")).getImage();
+            img[i] = (new ImageIcon("./img/HeX2/"+ i + ".png")).getImage();
         }
 
     }
@@ -138,6 +138,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL; //to ensure that it would not clear ur flags
                     }
                 }
             }
@@ -149,6 +150,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
             if(current_col%2==0) {
@@ -159,6 +161,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
             }
@@ -171,6 +174,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
 
@@ -181,6 +185,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
 
@@ -193,6 +198,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
             }
@@ -204,6 +210,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
             }
@@ -215,6 +222,7 @@ public class HexBoard extends Board {
                         if (field[cell] == EMPTY_CELL) {
                             find_empty_cells(cell);
                         }
+                        else if(field [cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                     }
                 }
         }
