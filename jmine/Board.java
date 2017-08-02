@@ -11,36 +11,36 @@ import java.util.Random;
 
 class Board extends JPanel {
 
-    private final int NUM_IMAGES = 14;
-    private final int CELL_SIZE = 15;
-    private final int COVER_FOR_CELL = 10;
-    private final int MARK_FOR_CELL = 10;
-    private final int EMPTY_CELL = 0;
-    private final int MINE_CELL = 9;
-    private final int SMALL_CELL = 8;// cell for small mines
+    public final int NUM_IMAGES = 14;
+    public final int CELL_SIZE = 15;
+    public final int COVER_FOR_CELL = 10;
+    public final int MARK_FOR_CELL = 10;
+    public final int EMPTY_CELL = 0;
+    public final int MINE_CELL = 9;
+    public final int SMALL_CELL = 8;// cell for small mines
 
-    private final int COVERED_MINE_CELL = MINE_CELL + COVER_FOR_CELL;
-    private final int MARKED_MINE_CELL = COVERED_MINE_CELL + MARK_FOR_CELL;
+    public final int COVERED_MINE_CELL = MINE_CELL + COVER_FOR_CELL;
+    public final int MARKED_MINE_CELL = COVERED_MINE_CELL + MARK_FOR_CELL;
 
-    private final int DRAW_MINE = 9;
-    private final int DRAW_COVER = 10;
-    private final int DRAW_MARK = 11;
-    private final int DRAW_WRONG_MARK = 12;
-    private final int DRAW_SMALL_MINE_CELL = 13; // visable  variable for small mines
+    public final int DRAW_MINE = 9;
+    public final int DRAW_COVER = 10;
+    public final int DRAW_MARK = 11;
+    public final int DRAW_WRONG_MARK = 12;
+    public final int DRAW_SMALL_MINE_CELL = 13; // visable  variable for small mines
 
-    private int N_MINES = 40;
-    private int N_SMALL_MINES = 10; // number of small mines
-    private int N_ROWS = 16;
-    private int N_COLS = 16;
+    public int N_MINES = 40;
+    public int N_SMALL_MINES = 10; // number of small mines
+    public int N_ROWS = 16;
+    public int N_COLS = 16;
 
-    private String username;
-    private int[] field;
-    private boolean inGame;
-    private int mines_left;
-    private Image[] img;
+    public String username;
+    public int[] field;
+    public boolean inGame;
+    public int mines_left;
+    public Image[] img;
 
-    private int all_cells;
-    private JLabel statusbar;
+    public int all_cells;
+    public JLabel statusbar;
     time runner; // reading the timer from time.java class
     int scounter=0; // counting walking on the small mines
     boolean solving_mode = false;
@@ -88,6 +88,7 @@ class Board extends JPanel {
         random = new Random();
         inGame = true;
         mines_left = N_MINES;
+        scounter=0;
 
         all_cells = N_ROWS * N_COLS;
         field = new int[all_cells];
@@ -96,7 +97,7 @@ class Board extends JPanel {
             field[i] = COVER_FOR_CELL;
         }
 
-        statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter); //place to change if u want to remove extra flag bug
+        statusbar.setText(Integer.toString(mines_left)+" with small mine left="+(3-scounter)); //place to change if u want to remove extra flag bug
         i = 0;
 
 
@@ -277,8 +278,6 @@ class Board extends JPanel {
                 {
                     counter++;
                 }
-
-
             }
         }
         return 0;
@@ -392,11 +391,9 @@ class Board extends JPanel {
     public boolean isundoEnable() {
         return state > 0;
     }
-
     public boolean isredoEnable() {
         return state < ur;
     }
-
     public void undo() {
 
         if (!isundoEnable()) {
@@ -416,7 +413,6 @@ class Board extends JPanel {
         repaint();
 
     }
-
     public void redo() {
 
         if (!isredoEnable()) {
@@ -467,7 +463,7 @@ class Board extends JPanel {
                                 System.out.println("x = [" + (field[(cRow * N_COLS) + cCol] + MARK_FOR_CELL) + "]");
                                 field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
-                                statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter);
+                                statusbar.setText(Integer.toString(mines_left)+" with small mine left="+(3-scounter));
                             } else {
                                 statusbar.setText("No marks left");
                             }
@@ -475,7 +471,7 @@ class Board extends JPanel {
                             System.out.println("e = [" + (field[(cRow * N_COLS) + cCol] - MARK_FOR_CELL) + "]");
                             field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
-                            statusbar.setText(Integer.toString(mines_left)+" with small mine left="+scounter);
+                            statusbar.setText(Integer.toString(mines_left)+" with small mine left="+(3-scounter));
                         }
                     }
 
@@ -558,7 +554,6 @@ class Board extends JPanel {
             }
         }
     }
-
     public void Load() {
         BufferedReader br = null;
         String sCurrentLine;
@@ -590,7 +585,6 @@ class Board extends JPanel {
             }
         }
     }
-
     public int[] copyarray(int[] source) {
         int[] dest = new int[source.length];
         for (int i = 0; i < source.length; i++) {

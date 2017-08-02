@@ -18,25 +18,60 @@ public class login {
     JSlider jp1, jp2, jp3, jp4;
     JLabel jl1, jl2, jl3, jl4;
     int num_min=225;
-    public void logstop() {
-        this.jf.setVisible(false);
-        nmin = jp3.getValue();
-        System.out.println(nmin);
-        r = jp1.getValue();
-        c = jp2.getValue();
 
-        s = jp4.getValue();
-
-        Mines m = new Mines(username, nmin, r, c,s);
-        m.setVisible(true);
+    public login(){
+        jf.setTitle("Enter to MineSweeper");
+        jf.setSize(500, 600);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.setLocationRelativeTo(null);
+        //phase-1
+        Object[] options = {"I Agree", "I don't Agree!"};
+        int n = JOptionPane.showOptionDialog(null,
+                "Arvin & Shervin Entertainment is not responsible for any damages caused by explosions",
+                "A & S Entertainment",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null,
+                options,
+                options[1]);
+        //phase-2
+        String dialogText = "Input Username";
+        if (n == JOptionPane.YES_OPTION) {
+            do {
+                username = JOptionPane.showInputDialog(null, dialogText, null, JOptionPane.INFORMATION_MESSAGE);
+                dialogText = "Input valid Username!... Please";
+            } while (username.equals(""));
+        }
+        else{
+            System.exit(0);
+        }
+        //phase-3
+        Object[] modes = {"Square", "Hex"};
+        int nn = JOptionPane.showOptionDialog(null,
+                "Choose the game mode you want to play",
+                "Game mode",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null,
+                modes,
+                modes[1]);
+        if (nn == JOptionPane.YES_OPTION) {
+            menu("square");
+        }
+        else{
+            menu("hexagon");
+        }
+        //start
+        jf.add(m);
+        jf.setVisible(true);
     }
 
-    public void square() {
+    public void menu(String mode ) {
         JLabel l1 = new JLabel("  No of Rows");
         JLabel l2 = new JLabel("  No of Columns");
         JLabel l3 = new JLabel("  Number of ALL Mines");
         JLabel l4 = new JLabel("  Number of Small Mines");
         JLabel l5 = new JLabel("  Hardship of Game");
+
+        //Hardship
         jc = new JComboBox(new String[]{"Simple", "Intermediate", "Hard"});
         jc.addActionListener(new ActionListener() {
 
@@ -46,6 +81,8 @@ public class login {
                 jp4.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min)/3);
             }
         });
+
+        //line 1
         jp1 = new JSlider(5, 30, 15);
         jp1.addChangeListener(new ChangeListener() {
 
@@ -59,6 +96,8 @@ public class login {
                 jp4.setMaximum(num_min);
             }
         });
+
+        //line 2
         jp2 = new JSlider(5, 30, 15);
         jp2.addChangeListener(new ChangeListener() {
 
@@ -72,6 +111,8 @@ public class login {
                 jp4.setMaximum(num_min);
             }
         });
+
+        //line 3
         jp3 = new JSlider(1, num_min, 15);
         jp3.addChangeListener(new ChangeListener() {
 
@@ -82,6 +123,8 @@ public class login {
                 jp4.setMaximum(jp3.getValue());
             }
         });
+
+        //line 4
         jp4 = new JSlider(1, 15, 5);
         jp4.addChangeListener(new ChangeListener() {
 
@@ -90,20 +133,22 @@ public class login {
                 jl4.setText("1 : " + jp4.getValue() + " : " + jp3.getValue());
             }
         });
+
+        //start button
         JButton jb = new JButton("Start Game");
         jb.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
-                logstop();
+                mapGenerator(mode);
             }
         });
+
         jl1 = new JLabel("5 : 15 : 30");
         jl2 = new JLabel("5 : 15 : 30");
         jl3 = new JLabel("1 : 15 : " + num_min);
         jl4 = new JLabel("1 : 5 : 15");
+
         m.add(l1, 0);
         m.add(jp1, 1);
         m.add(jl1, 2);
@@ -127,58 +172,20 @@ public class login {
         m.add(new JLabel(), 16);
         m.add(jb, 17);
     }
-    public login(){
-        Object[] options = {"I Agree", "I don't Agree!"};
 
-        int n = JOptionPane.showOptionDialog(null,
-                "Arvin & Shervin Entertainment is not responsable for any damages caused by explosions",
-                "A & S Entertainment",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null,
-                options,
-                options[1]);
+    //generating map
+    public void mapGenerator(String mode) {
+        this.jf.setVisible(false);
 
+        r = jp1.getValue();
+        c = jp2.getValue();
+        nmin = jp3.getValue();
+        s = jp4.getValue();
 
-        String dialogText = "Input Username";
-
-        if (n == JOptionPane.YES_OPTION) {
-            do {
-                username = JOptionPane.showInputDialog(null, dialogText, null, JOptionPane.INFORMATION_MESSAGE);
-                dialogText = "Input valid Username!... Please";
-            } while (username.equals(""));
-        }
-        else{
-            System.exit(0);
-        }
-
-        //
-        Object[] modes = {"Square", "Hex"};
-
-        int nn = JOptionPane.showOptionDialog(null,
-                "Choose the game mode you want to play",
-                "Game mode",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null,
-                modes,
-                modes[1]);
-        if (nn == JOptionPane.YES_OPTION) {
-            square();
-        }
-        else{
-            System.out.println("Hex?");
-            System.exit(0);
-        }
-        //
-
-        jf.setTitle("Enter to MineSweeper");
-
-        jf.add(m);
-        jf.setSize(500, 600);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setLocationRelativeTo(null);
-        jf.setVisible(true);
+        Mines m = new Mines(username, nmin, r, c,s,mode);
+        m.setVisible(true);
     }
-
+    //Test
     public static void main(String a[]) {
         login mnm = new login();
 
