@@ -194,6 +194,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL; //to ensure that it would not clear ur flags
                 }
             }
 
@@ -204,6 +205,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                 }
             }
 
@@ -214,6 +216,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                 }
             }
         }
@@ -225,6 +228,7 @@ class Board extends JPanel {
                 if (field[cell] == EMPTY_CELL) {
                     find_empty_cells(cell);
                 }
+                else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
             }
         }
 
@@ -235,6 +239,7 @@ class Board extends JPanel {
                 if (field[cell] == EMPTY_CELL) {
                     find_empty_cells(cell);
                 }
+                else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
             }
         }
 
@@ -246,6 +251,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                 }
             }
 
@@ -256,6 +262,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                 }
             }
 
@@ -266,6 +273,7 @@ class Board extends JPanel {
                     if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
                     }
+                    else if(field[cell] > MINE_CELL) field[cell] += COVER_FOR_CELL;
                 }
             }
         }
@@ -309,12 +317,14 @@ class Board extends JPanel {
                     } else if (cell > MINE_CELL) {
                         cell -= COVER_FOR_CELL;                                             //show map
                     } else {
-                        cell = 10;
+                        cell = cell+1-1;                                                    //to show selected cells permanently
                     }
                     setting(g,i,j,cell,G_MODE);
                 }
             }
             solving_mode = false;
+            inGame=false;
+            statusbar.setText("Here's the Solution but ...Never Give up anymore...");
             return;
         }
         int cell;
@@ -339,7 +349,6 @@ class Board extends JPanel {
                         }else{
                             cell = DRAW_MINE;
                         }
-//                        cell = DRAW_MINE;
                     } else if (cell == MARKED_MINE_CELL) {
                         cell = DRAW_MARK;
                     } else if (cell > COVERED_MINE_CELL) {
@@ -367,17 +376,17 @@ class Board extends JPanel {
 
         if (uncover == 0 && inGame) {
             inGame = false;
-            statusbar.setText("You are Legend !!!");
-
             runner.stoptime = true;
+            statusbar.setText("You are Legend !!!");
             new summary(G_MODE).savesummary(username, runner.start + "");
 
 
         } else if (!inGame) {
 
             runner.stoptime = true;
-            new summary(G_MODE).savesummary(username, runner.start + "");
             statusbar.setText("I'm Really Sorry Mate  , you just killed yourself by Walking on mines !!!!");
+            //new summary(G_MODE).savesummary(username, runner.start + "");
+
 
         }
 
