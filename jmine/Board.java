@@ -12,7 +12,6 @@ import java.util.Random;
 class Board extends JPanel {
 
     public final int NUM_IMAGES = 14;
-    public int CELL_SIZE = 15;
     public final int COVER_FOR_CELL = 10;
     public final int MARK_FOR_CELL = 10;
     public final int EMPTY_CELL = 0;
@@ -38,6 +37,9 @@ class Board extends JPanel {
     public boolean inGame;
     public int mines_left;
     public Image[] img;
+
+    public int CELL_SIZE = 15;
+    public String G_MODE="square";
 
     public int all_cells;
     public JLabel statusbar;
@@ -309,9 +311,7 @@ class Board extends JPanel {
                     } else {
                         cell = 10;
                     }
-
-                    g.drawImage(img[cell], (j * CELL_SIZE),
-                            (i * CELL_SIZE), this);
+                    setting(g,i,j,cell,G_MODE);
                 }
             }
             solving_mode = false;
@@ -356,16 +356,12 @@ class Board extends JPanel {
                         uncover++;
                     } else if(cell==SMALL_CELL) {
                         //System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
-
-
                         cell=DRAW_SMALL_MINE_CELL;
                     }
 
 
                 }
-
-                g.drawImage(img[cell], (j * CELL_SIZE),
-                        (i * CELL_SIZE), this);
+                setting(g,i,j,cell,G_MODE);
             }
         }
 
@@ -374,13 +370,13 @@ class Board extends JPanel {
             statusbar.setText("You are Legend !!!");
 
             runner.stoptime = true;
-            new summary().savesummary(username, runner.start + "");
+            new summary(G_MODE).savesummary(username, runner.start + "");
 
 
         } else if (!inGame) {
 
             runner.stoptime = true;
-            new summary().savesummary(username, runner.start + "");
+            new summary(G_MODE).savesummary(username, runner.start + "");
             statusbar.setText("I'm Really Sorry Mate  , you just killed yourself by Walking on mines !!!!");
 
         }
@@ -430,6 +426,26 @@ class Board extends JPanel {
         System.out.println("REDO\t" + ur + "\t" + state + "\t" + tempfield.size());
     }
 
+    private void setting(Graphics g,int i ,int j, int cell ,String mode){
+
+        if(mode=="square") {
+            g.drawImage(img[cell], (j * CELL_SIZE),
+                    (i * CELL_SIZE), this);
+        }
+        else if(mode=="hexagon"){
+            if(j%2==0){
+                g.drawImage(img[cell], (j * CELL_SIZE),
+                        (i * CELL_SIZE+CELL_SIZE/2), this);
+                //System.out.println("x");
+            }
+            else{
+                g.drawImage(img[cell], (j * CELL_SIZE),
+                        (i * CELL_SIZE), this);
+                //System.out.println("g ");
+            }
+        }
+    }
+
     class MinesAdapter extends MouseAdapter {
 
         @Override
@@ -438,9 +454,11 @@ class Board extends JPanel {
 
             int x = e.getX();
             int y = e.getY();
+            if(G_MODE=="hexagon")
+                y -= CELL_SIZE/2;
 
             int cCol = x / CELL_SIZE;
-            int cRow = y / CELL_SIZE;
+            int cRow= y / CELL_SIZE;
 
             boolean rep = false;
 

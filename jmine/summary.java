@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class summary {
+    private String mode;
+
+    public summary(String mode) { this.mode=mode;}
+    public summary(){} //default constructor
 
     public String loadallsummaries() {
         BufferedReader br = null;
         String sCurrentLine;
         int counter = 1;
         List<String> sort=new ArrayList<String>();
-        String result = "Final result of old games:(username,timelaps)\n";
+        String result = "Final result of old games:(username,timelaps,mode)\n";
         try {
             br = new BufferedReader(new FileReader("summary.txt"));
             while ((sCurrentLine = br.readLine()) != null) {
@@ -103,7 +107,7 @@ public class summary {
             while ((sCurrentLine = br.readLine()) != null) {
 
                 if (linenumber == oldvalue) {
-                    summary += (username + "," + rank + "\n");
+                    summary += (username + "," + rank + "," + mode +"\n");
                 } else {
                     summary += (sCurrentLine + "\n");
                 }
@@ -111,12 +115,12 @@ public class summary {
             }
 
             if (oldvalue == -1) {
-                summary = summary + "\n" + username + "," + rank;
+                summary = summary + "\n" + username + "," + rank + "," + mode ;
             }
         } catch (Exception e) {
 
             if (oldvalue == -1) {
-                summary = username + "," + rank;
+                summary = username + "," + rank + "," + mode ;
             }
         } finally {
             try {
