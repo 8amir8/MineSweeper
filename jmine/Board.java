@@ -12,7 +12,7 @@ import java.util.Random;
 class Board extends JPanel {
 
     public final int NUM_IMAGES = 14;
-    public final int CELL_SIZE = 15;
+    public int CELL_SIZE = 15;
     public final int COVER_FOR_CELL = 10;
     public final int MARK_FOR_CELL = 10;
     public final int EMPTY_CELL = 0;
@@ -26,12 +26,12 @@ class Board extends JPanel {
     public final int DRAW_COVER = 10;
     public final int DRAW_MARK = 11;
     public final int DRAW_WRONG_MARK = 12;
-    public final int DRAW_SMALL_MINE_CELL = 13; // visable  variable for small mines
+    public final int DRAW_SMALL_MINE_CELL = 13; // visible  variable for small mines
 
-    public int N_MINES = 40;
-    public int N_SMALL_MINES = 10; // number of small mines
-    public int N_ROWS = 16;
-    public int N_COLS = 16;
+    public int N_MINES = 15;
+    public int N_SMALL_MINES = 5; // number of small mines
+    public int N_ROWS = 15;
+    public int N_COLS = 15;
 
     public String username;
     public int[] field;
@@ -45,7 +45,7 @@ class Board extends JPanel {
     int scounter=0; // counting walking on the small mines
     boolean solving_mode = false;
     List<int[]> tempfield = new ArrayList<int[]>();// undo and redo field
-    int ur = -1, state = 0; // ur is a temo variable to hold the state of the game & State is to hold the position of the game  
+    int ur = -1, state = 0; // ur is a temp variable to hold the state of the game & State is to hold the position of the game
     int small_mine_random[]=null; //randomly set the small mines in the field variable
     public Board(JLabel statusbar, String username, int nmin, int r, int c, time run,int smallmine) {
         N_SMALL_MINES = smallmine;
@@ -63,7 +63,7 @@ class Board extends JPanel {
         img = new Image[NUM_IMAGES];
 
         for (int i = 0; i < NUM_IMAGES; i++) {
-            img[i] = (new ImageIcon("./img/"+ i + ".png")).getImage();
+            img[i] = (new ImageIcon("./img/sqr/"+ i + ".png")).getImage();
         }
 
         setDoubleBuffered(true);
@@ -274,7 +274,7 @@ class Board extends JPanel {
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLS; j++) {
                 if(i==r && j==c)return counter;
-                if(field[i*N_COLS+j]==COVERED_MINE_CELL||field[i*N_COLS+j]== SMALL_CELL||field[i*N_COLS+j]== MINE_CELL )
+                if(field[i*N_COLS+j]==MARKED_MINE_CELL||field[i*N_COLS+j]==COVERED_MINE_CELL||field[i*N_COLS+j]== SMALL_CELL||field[i*N_COLS+j]== MINE_CELL )
                 {
                     counter++;
                 }
@@ -305,7 +305,7 @@ class Board extends JPanel {
                     } else if (cell > COVERED_MINE_CELL) {
                         cell = DRAW_WRONG_MARK;
                     } else if (cell > MINE_CELL) {
-                        cell = DRAW_COVER;
+                        cell -= COVER_FOR_CELL;                                             //show map
                     } else {
                         cell = 10;
                     }
@@ -387,7 +387,6 @@ class Board extends JPanel {
 
     }
 
-
     public boolean isundoEnable() {
         return state > 0;
     }
@@ -446,9 +445,10 @@ class Board extends JPanel {
             boolean rep = false;
 
             if (!inGame) {
-
-                newGame();
-                repaint();
+                //newGame();
+                //repaint();
+                statusbar.setText("Start a new game");
+                return;
             }
 
             if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {
@@ -478,12 +478,12 @@ class Board extends JPanel {
                 } else {
 
                     if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
-                        //System.out.println("wtf");
+                        //already marked and should take no action
                         return;
                     }
 
                     if ((field[(cRow * N_COLS) + cCol] > MINE_CELL)
-                            && (field[(cRow * N_COLS) + cCol] < MARKED_MINE_CELL)) {
+                            && (field[(cRow * N_COLS) + cCol] < MARKED_MINE_CELL)) { //or <= COVERED_MINE_CELL
 
                         field[(cRow * N_COLS) + cCol] -= COVER_FOR_CELL;
                         rep = true;
@@ -494,6 +494,7 @@ class Board extends JPanel {
                             if(small_mine_random[position(cCol, cRow)]==1){
                                 field[(cRow * N_COLS) + cCol]=SMALL_CELL;
                                 scounter++;
+                                mines_left--;
                                 statusbar.setText("Hey mate ! Be Careful... you Just walk over "+(scounter)+" small mine/s.");
                                 if(scounter==3){/*counting 3 walking steps on the mines */
                                     statusbar.setText("I'm Really Sorry Mate , you walked over small mine for 3rd time!");
@@ -501,6 +502,7 @@ class Board extends JPanel {
                                 }
                             }else{
                                 inGame = false;
+                                System.out.println("Mine exploded");
                             }
 
 

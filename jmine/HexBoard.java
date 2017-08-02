@@ -5,14 +5,13 @@ import java.awt.*;
 import java.util.Random;
 
 public class HexBoard extends Board {
-
     public HexBoard(JLabel statusbar, String username, int nmin, int r, int c, time run, int smallmine) {
         super(statusbar, username, nmin, r, c, run, smallmine);
 
         img = new Image[NUM_IMAGES];
-
+        CELL_SIZE = 20;
         for (int i = 0; i < NUM_IMAGES; i++) {
-            img[i] = (new ImageIcon("./img/i"+ i + ".png")).getImage();
+            img[i] = (new ImageIcon("./img/HeX/"+ i + ".png")).getImage();
         }
 
     }

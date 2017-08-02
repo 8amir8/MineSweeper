@@ -27,7 +27,10 @@ public class Mines extends JFrame {
 
         this.username=username;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(col*15+155, row*15+67); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
+        if(mode=="hexagon")
+            setSize(col*20+155, row*20+67); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
+        if(mode=="square")
+            setSize(col*15+155, row*15+67); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
         setResizable(false);
         setLocationRelativeTo(null);
         //status bar
