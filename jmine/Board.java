@@ -63,7 +63,7 @@ class Board extends JPanel {
         img = new Image[NUM_IMAGES];
 
         for (int i = 0; i < NUM_IMAGES; i++) {
-            img[i] = (new ImageIcon(i + ".png")).getImage();
+            img[i] = (new ImageIcon("./img/"+ i + ".png")).getImage();
         }
 
         setDoubleBuffered(true);
