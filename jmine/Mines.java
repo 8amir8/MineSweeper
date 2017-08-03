@@ -227,4 +227,4 @@ public class Mines extends JFrame {
     public static void exit(){
         System.exit(0);
     }
-} 
+}
