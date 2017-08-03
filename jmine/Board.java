@@ -86,6 +86,7 @@ class Board extends JPanel {
 
         small_mine_random=random(N_MINES, N_SMALL_MINES);
         state=0;
+        ur=-1;
 
         random = new Random();
         inGame = true;
@@ -435,7 +436,7 @@ class Board extends JPanel {
         System.out.println("REDO\t" + ur + "\t" + state + "\t" + tempfield.size());
     }
 
-    private void setting(Graphics g,int i ,int j, int cell ,String mode){
+    private void setting(Graphics g,int i ,int j, int cell ,String mode){  //real CELL_SIZE or best output?
 
         if(mode=="square") {
             g.drawImage(img[cell], (j * CELL_SIZE),
@@ -468,7 +469,8 @@ class Board extends JPanel {
 
             int cCol = x / CELL_SIZE;
             int cRow= y / CELL_SIZE;
-
+            System.out.println(cCol+" "+cRow);
+            System.out.println(x+" "+y);
             boolean rep = false;
 
             if (!inGame) {
@@ -551,15 +553,16 @@ class Board extends JPanel {
 
             ur = state;
         }
-    }
+    } //lil mouse cell clicking problem
 
-    public void Save() {
+    public void Save(time t) {
 
         BufferedWriter bw = null;
         String mycontent = "";
         for (int i = 0; i < field.length; i++) {
             mycontent += field[i] + " ";
         }
+        mycontent+=t.getStart();
         try {
             System.out.println("Save file: " + username);
             File file = new File("users" +File.separator+ username + ".txt");
@@ -583,14 +586,14 @@ class Board extends JPanel {
             }
         }
     }
-    public void Load() {
+    public void Load(time t) {
         BufferedReader br = null;
         String sCurrentLine;
         try {
             br = new BufferedReader(new FileReader("users"+File.separator + username + ".txt"));
             while ((sCurrentLine = br.readLine()) != null) {
                 String[] vals = sCurrentLine.split(" ");
-                int[] savedField = new int[vals.length];
+                int[] savedField = new int[vals.length-1];
                 for (int i = 0; i < savedField.length; i++) {
                     try {
                         savedField[i] = Integer.parseInt(vals[i]);
@@ -598,6 +601,7 @@ class Board extends JPanel {
                     }
                 }
                 field = savedField;
+                t.setStart(Integer.parseInt(vals[vals.length-1]));
                 this.setVisible(false);
                 this.setVisible(true);
                 System.out.println("File Read Successfully");

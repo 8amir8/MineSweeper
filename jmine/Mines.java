@@ -63,14 +63,14 @@ public class Mines extends JFrame {
             file.add(load);
             load.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    myBoard.Load();
+                    myBoard.Load(t);
                 }
             });
             JMenuItem save = new JMenuItem("Save");
             file.add(save);
             save.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    myBoard.Save();
+                    myBoard.Save(t);
                 }
             });
             JMenuItem exit = new JMenuItem("Exit");
@@ -176,7 +176,7 @@ public class Mines extends JFrame {
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myBoard.Save();
+                myBoard.Save(t);
             }
         });
 

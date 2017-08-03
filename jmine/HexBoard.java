@@ -28,6 +28,7 @@ public class HexBoard extends Board {
 
         small_mine_random=random(N_MINES, N_SMALL_MINES);
         state=0;
+        ur=-1;
 
         random = new Random();
         inGame = true;
