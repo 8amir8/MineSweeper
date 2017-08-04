@@ -228,5 +228,16 @@ public class HexBoard extends Board {
                 }
         }
     }
-
+    public void setting(Graphics g, int i , int j , int cell ){
+    if(j%2==0){
+        g.drawImage(img[cell], (j * CELL_SIZE),
+                (i * CELL_SIZE+CELL_SIZE/2), this);
+        //System.out.println("x");
+    }
+    else{
+        g.drawImage(img[cell], (j * CELL_SIZE),
+                (i * CELL_SIZE), this);
+        //System.out.println("g ");
+    }
+    }
 }

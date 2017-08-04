@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -320,7 +321,7 @@ class Board extends JPanel {
                     } else {
                         cell = cell+1-1;                                                    //to show selected cells permanently
                     }
-                    setting(g,i,j,cell,G_MODE);
+                    setting(g,i,j,cell);
                 }
             }
             solving_mode = false;
@@ -371,7 +372,7 @@ class Board extends JPanel {
 
 
                 }
-                setting(g,i,j,cell,G_MODE);
+                setting(g,i,j,cell);
             }
         }
 
@@ -436,24 +437,9 @@ class Board extends JPanel {
         System.out.println("REDO\t" + ur + "\t" + state + "\t" + tempfield.size());
     }
 
-    private void setting(Graphics g,int i ,int j, int cell ,String mode){  //real CELL_SIZE or best output?
-
-        if(mode=="square") {
+    public void setting(Graphics g,int i ,int j, int cell){  //real CELL_SIZE or best output?
             g.drawImage(img[cell], (j * CELL_SIZE),
                     (i * CELL_SIZE), this);
-        }
-        else if(mode=="hexagon"){
-            if(j%2==0){
-                g.drawImage(img[cell], (j * CELL_SIZE),
-                        (i * CELL_SIZE+CELL_SIZE/2), this);
-                //System.out.println("x");
-            }
-            else{
-                g.drawImage(img[cell], (j * CELL_SIZE),
-                        (i * CELL_SIZE), this);
-                //System.out.println("g ");
-            }
-        }
     }
 
     class MinesAdapter extends MouseAdapter {
@@ -465,6 +451,7 @@ class Board extends JPanel {
             int x = e.getX();
             int y = e.getY();
             if(G_MODE=="hexagon")
+            if((x / CELL_SIZE)%2==0)
                 y -= CELL_SIZE/2;
 
             int cCol = x / CELL_SIZE;
@@ -480,7 +467,11 @@ class Board extends JPanel {
                 return;
             }
 
+            if(cCol>14||cRow>14)return;                                     //prevent clicking out of board
+
             if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {
+
+                if(field[(cRow * N_COLS) + cCol] < SMALL_CELL) return;      //condition to not increase state when clicking uncovered
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
@@ -562,7 +553,16 @@ class Board extends JPanel {
         for (int i = 0; i < field.length; i++) {
             mycontent += field[i] + " ";
         }
-        mycontent+=t.getStart();
+        //Save Mine orders
+        System.out.println(Arrays.toString(small_mine_random));
+        String mo = "";
+        for (int xx:small_mine_random) {
+            System.out.print(Integer.toString(small_mine_random[xx]));
+            mo += Integer.toString(small_mine_random[xx]);
+        }
+
+        //
+        mycontent+=mo+" "+t.getStart();//++
         try {
             System.out.println("Save file: " + username);
             File file = new File("users" +File.separator+ username + ".txt");
@@ -593,7 +593,7 @@ class Board extends JPanel {
             br = new BufferedReader(new FileReader("users"+File.separator + username + ".txt"));
             while ((sCurrentLine = br.readLine()) != null) {
                 String[] vals = sCurrentLine.split(" ");
-                int[] savedField = new int[vals.length-1];
+                int[] savedField = new int[vals.length-2];//++
                 for (int i = 0; i < savedField.length; i++) {
                     try {
                         savedField[i] = Integer.parseInt(vals[i]);
@@ -601,6 +601,12 @@ class Board extends JPanel {
                     }
                 }
                 field = savedField;
+                //Load Mine orders
+                String x=vals[vals.length-2];
+                for(int h=0;h<small_mine_random.length;h++)
+                    small_mine_random[h]=Integer.parseInt(String.valueOf(x.charAt(h)));
+                System.out.println(Arrays.toString(small_mine_random));
+                //
                 t.setStart(Integer.parseInt(vals[vals.length-1]));
                 this.setVisible(false);
                 this.setVisible(true);
