@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description"  content="Free Square and Hexagon MineSweeper" >
+	<meta name="keywords" content="Hexagon, Mine, Sweeper, MineSweeper, A&S, Entertainment, HexMineSweeper, Game, Free, FreeHexMineSweeper" >
+
+	<title>Free Games :: MineSweeper-SQR/HEX</title>
+
+
+	<link rel="stylesheet" href="./styles/w3.css">
+	<link rel="stylesheet" href="./styles/font.css">
+
+	<style>
+		body,h1,h5 {font-family: "Raleway", sans-serif}
+		body, html {height: 100%}
+		.bgimg {
+			background-image: url('./img/minesweeper.jpg');
+			min-height: 100%;
+			background-position: center;
+			background-size: cover;
+		}
+	</style>
+
+	<script src="./scripts/java.js"></script>
+	<script>
+		var attributes = {
+			code:'./out/production/MineSweeper/jmine/login.class',
+		width:100%, height:100%} ;
+		var parameters = {}; // does the Applet take parameters?
+		var version = '1.8' ; // does the Applet require a minimum version of Java
+		deployJava.runApplet(attributes, parameters, version);
+	</script>
+</head>
+<body>
+
+<div class="bgimg w3-display-container w3-text-white">
+  <div class="w3-display-middle w3-jumbo">
+  	<br style="font-size:20px;"><br>
+    <p>MineSweeper</p>
+  </div>
+  <div class="w3-display-topleft w3-container w3-xlarge">
+    <p><button onclick="document.getElementById('menu').style.display='block'" class="w3-button w3-black">start</button></p>
+    <p><button onclick="document.getElementById('contact').style.display='block'" class="w3-button w3-black">contact</button></p>
+  </div>
+  <div class="w3-display-bottomleft w3-container">
+    <p class="w3-xlarge">Arvin and Shervin Entertainment</p>
+    <p class="w3-large">a game by ReZa~BehBahani</p>
+  </div>
+</div>
+
+<!-- Menu Modal -->
+<div id="menu" class="w3-modal">
+  <div class="w3-modal-content w3-animate-zoom">
+    <div class="w3-container w3-black w3-display-container">
+      <span onclick="document.getElementById('menu').style.display='none'" class="w3-button w3-display-topright w3-large">x</span>
+      <h1>Top 3 Stars</h1>
+    </div>
+    <div class="w3-container">
+      <h5>user1<b> 3.50 point </b></h5>
+      <h5>user2<b> 2.50 point </b></h5>
+      <h5>user3<b> 1.00 point </b></h5>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div id="contact" class="w3-modal">
+  <div class="w3-modal-content w3-animate-zoom">
+    <div class="w3-container w3-black">
+      <span onclick="document.getElementById('contact').style.display='none'" class="w3-button w3-display-topright w3-large">x</span>
+      <h1>Contact</h1>
+    </div>
+    <div class="w3-container">
+      <p>If you find out any problem(s),let us know:</p>
+      <form action="./action_page.html" target="_blank">
+        <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Your mail address" required name="Mail"></p>
+        <p><input class="w3-input w3-padding-16 w3-border" type="datetime-local" placeholder="Date and time" required name="date" value= <?php echo ( date("Y/m/d") . time() ); ?> ></p> <!--- mktime(hour,minute,second,month,day,year)--->
+        <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Explain the problem" required name="Message"></p>
+        <p><button class="w3-button" type="submit">Report it :)</button></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
