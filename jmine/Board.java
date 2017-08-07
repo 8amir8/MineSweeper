@@ -409,8 +409,8 @@ class Board extends JPanel {
         field = copyarray(tempfield.get(state - 1));
 
         state--;
-        System.out.println("Repaint");
-        System.out.println(ur + "\t" + state + "\t" + tempfield.size());
+        //System.out.println("Repaint");
+        //System.out.println(ur + "\t" + state + "\t" + tempfield.size());
         repaint();
 
     }
@@ -511,7 +511,7 @@ class Board extends JPanel {
 
 
                         if (field[(cRow * N_COLS) + cCol] == MINE_CELL) {
-                            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^");
+                            //System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^");
                             if(small_mine_random[position(cCol, cRow)]==1){
                                 field[(cRow * N_COLS) + cCol]=SMALL_CELL;
                                 scounter++;
