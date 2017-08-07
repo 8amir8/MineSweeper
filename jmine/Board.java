@@ -180,6 +180,8 @@ class Board extends JPanel {
 
     public void solve() {
         solving_mode = true;
+        state=0;                                //disable undo after solve
+        ur=-1;
         repaint();
     }
 
@@ -317,7 +319,7 @@ class Board extends JPanel {
                     } else if (cell > COVERED_MINE_CELL) {
                         cell = DRAW_WRONG_MARK;
                     } else if (cell > MINE_CELL) {
-                        cell -= COVER_FOR_CELL;                                             //show map
+                        cell = COVER_FOR_CELL;                                             //show mines only
                     } else {
                         cell = cell+1-1;                                                    //to show selected cells permanently
                     }
@@ -326,7 +328,7 @@ class Board extends JPanel {
             }
             solving_mode = false;
             inGame=false;
-            statusbar.setText("Here's the Solution but ...Never Give up anymore...");
+            statusbar.setText("Here's the Solution but ...Never Give up next time...");
             return;
         }
         int cell;
@@ -337,7 +339,7 @@ class Board extends JPanel {
 
                 cell = field[(i * N_COLS) + j];
 
-                if (inGame && cell == MINE_CELL) {                      //usage: Safety check , not neccessary
+                if (inGame && cell == MINE_CELL) {                      //usage: Safety check , not necessary
                     inGame=false;
                 }
 
@@ -381,10 +383,10 @@ class Board extends JPanel {
 
         } else if (!inGame) {
             runner.stoptime = true;
-            System.out.println("XXX");
+            //System.out.println("XXX");
             //new summary(G_MODE).savesummary(username, runner.start + "");
         }
-
+        //refresh();
     }
 
     public boolean isundoEnable() {
@@ -449,22 +451,27 @@ class Board extends JPanel {
 
             int cCol = x / CELL_SIZE;
             int cRow= y / CELL_SIZE;
-            System.out.println(cCol+" "+cRow);
-            System.out.println(x+" "+y);
             boolean rep = false;
 
             if (!inGame) {
                 //newGame();
                 //repaint();
                 statusbar.setText("Start a new game");
+                refresh();
                 return;
             }
 
-            if(cCol>14||cRow>14)return;                                     //prevent clicking out of board
+            if(cCol>14||cRow>14){
+                refresh();
+                return;
+            }                                     //prevent clicking out of board
 
             if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {
 
-                if(field[(cRow * N_COLS) + cCol] < SMALL_CELL) return;      //condition to not increase state when clicking uncovered
+                if(field[(cRow * N_COLS) + cCol] < SMALL_CELL) {
+                    refresh();
+                    return;
+                }                                 //condition to not increase state when clicking uncovered
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
@@ -492,6 +499,7 @@ class Board extends JPanel {
 
                     if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {
                         //already marked and should take no action
+                        refresh();
                         return;
                     }
 
@@ -534,10 +542,10 @@ class Board extends JPanel {
             state++;
             int newdest[] = copyarray(field);
             tempfield.add(state, newdest);
-
+            refresh();
             ur = state;
         }
-    } //lil mouse cell clicking problem
+    }
 
     public void Save(time t) {
 
@@ -640,5 +648,10 @@ class Board extends JPanel {
             }
         }
         return res;
+    }
+    public void refresh(){
+        setVisible(false);
+        setVisible(true);
+        System.out.println("Refreshed");
     }
 }
