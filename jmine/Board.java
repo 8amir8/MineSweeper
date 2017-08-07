@@ -337,18 +337,16 @@ class Board extends JPanel {
 
                 cell = field[(i * N_COLS) + j];
 
-                if (inGame && cell == MINE_CELL) {
+                if (inGame && cell == MINE_CELL) {                      //usage: Safety check , not neccessary
                     inGame=false;
-
                 }
 
-                if (!inGame) {
+                if (!inGame) {                                          //usage: End of the game : uncovering mines and mistakes
                     if (cell == COVERED_MINE_CELL||cell==SMALL_CELL) {
-                        //System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         if(small_mine_random[position(j, i)]==1){
-
                             cell=DRAW_SMALL_MINE_CELL;
-                        }else{
+                        }
+                        else{
                             cell = DRAW_MINE;
                         }
                     } else if (cell == MARKED_MINE_CELL) {
@@ -359,37 +357,32 @@ class Board extends JPanel {
                         cell = DRAW_COVER;
                     }
 
-                } else {
+                }
+                else {                                                  //usage: in game repaint
                     if (cell > COVERED_MINE_CELL) {
                         cell = DRAW_MARK;
                     } else if (cell > MINE_CELL) {
                         cell = DRAW_COVER;
                         uncover++;
                     } else if(cell==SMALL_CELL) {
-                        //System.out.println(i+":"+j+":"+position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         cell=DRAW_SMALL_MINE_CELL;
                     }
-
-
                 }
                 setting(g,i,j,cell);
             }
         }
 
-        if (uncover == 0 && inGame) {
+        if (uncover == 0 && inGame) {                                   //usage: win reaction
             inGame = false;
             runner.stoptime = true;
             statusbar.setText("You are Legend !!!");
-            new summary(G_MODE).savesummary(username, runner.start + "");
+            new summary(G_MODE).savesummary(username, runner.start + "");   //usage : add to ladder
 
 
         } else if (!inGame) {
-
             runner.stoptime = true;
-            statusbar.setText("I'm Really Sorry Mate  , you just killed yourself by Walking on mines !!!!");
+            System.out.println("XXX");
             //new summary(G_MODE).savesummary(username, runner.start + "");
-
-
         }
 
     }
@@ -521,10 +514,10 @@ class Board extends JPanel {
                                     inGame = false;
                                 }
                             }else{
+                                statusbar.setText("I'm Really Sorry Mate  , you just killed yourself by Walking on mines !!!!");
                                 inGame = false;
                                 System.out.println("Mine exploded");
                             }
-
 
                         }
                         if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL) {

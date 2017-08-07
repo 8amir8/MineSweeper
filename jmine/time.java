@@ -22,6 +22,9 @@ public class time implements Runnable {
         start=0;
         stoptime=false;
     }
+    public void continueT() {
+        stoptime=false;
+    }
     public void setStart(int s) {
         start=s;
         stoptime=false;

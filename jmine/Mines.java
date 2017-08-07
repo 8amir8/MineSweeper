@@ -89,6 +89,8 @@ public class Mines extends JFrame {
             undo.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     myBoard.undo();
+                    t.continueT();
+                    runner.execute(t);
                 }
             });
             JMenuItem redo = new JMenuItem("redo");
