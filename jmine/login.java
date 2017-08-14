@@ -45,7 +45,7 @@ public class login {
             System.exit(0);
         }
         //phase-3
-        Object[] modes = {"Square", "Hex"};
+        Object[] modes = {"Square", "Hex" , "ColoredGraph"};
         int nn = JOptionPane.showOptionDialog(null,
                 "Choose the game mode you want to play",
                 "Game mode",
@@ -56,8 +56,11 @@ public class login {
         if (nn == JOptionPane.YES_OPTION) {
             menu("square");
         }
-        else{
+        else if(nn==JOptionPane.NO_OPTION){
             menu("hexagon");
+        }
+        else{
+            menu("cg");
         }
         //start
         jf.add(m);
@@ -71,6 +74,12 @@ public class login {
         JLabel l4 = new JLabel("  Number of Small Mines");
         JLabel l5 = new JLabel("  Hardship of Game");
 
+        if(mode=="cg")
+        {
+            l3.setText("  Numer of Mines");
+            l4.setText("  Number of Colors");
+        }
+
         //Hardship
         jc = new JComboBox(new String[]{"Simple", "Intermediate", "Hard"});
         jc.addActionListener(new ActionListener() {
@@ -79,6 +88,11 @@ public class login {
             public void actionPerformed(ActionEvent e) {
                 jp3.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min));
                 jp4.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min)/3);
+                if(mode=="cg")
+                {
+                    jp3.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min));
+                    jp4.setValue( 2*(4-(jc.getSelectedIndex() + 1))+1 );
+                }
             }
         });
 
@@ -94,6 +108,13 @@ public class login {
                 jl4.setText("1 : " + jp4.getValue() + " : " + num_min);
                 jp3.setMaximum(num_min);
                 jp4.setMaximum(num_min);
+                if(mode=="cg")
+                {
+                    jl3.setText("1 : " + jp3.getValue() + " : " + num_min/2);
+                    jp3.setMaximum(num_min/2);
+                    jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
+                    jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                }
             }
         });
 
@@ -109,6 +130,13 @@ public class login {
                 jl4.setText("1 : " + jp4.getValue() + " : " + num_min);
                 jp3.setMaximum(num_min);
                 jp4.setMaximum(num_min);
+                if(mode=="cg")
+                {
+                    jl3.setText("1 : " + jp3.getValue() + " : " + num_min/2);
+                    jp3.setMaximum(num_min/2);
+                    jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
+                    jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                }
             }
         });
 
@@ -121,6 +149,13 @@ public class login {
                 jl3.setText("1 : " + jp3.getValue() + " : " + num_min);
                 jl4.setText("1 : " + jp4.getValue() + " : " + jp3.getValue());
                 jp4.setMaximum(jp3.getValue());
+                if(mode=="cg")
+                {
+                    jl3.setText("1 : " + jp3.getValue() + " : " + num_min/2);
+                    jp3.setMaximum(num_min/2);
+                    jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
+                    jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                }
             }
         });
 
@@ -131,6 +166,11 @@ public class login {
             @Override
             public void stateChanged(ChangeEvent e) {
                 jl4.setText("1 : " + jp4.getValue() + " : " + jp3.getValue());
+                if(mode=="cg")
+                {
+                    jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
+                    jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                }
             }
         });
 
@@ -176,13 +216,15 @@ public class login {
     //generating map
     public void mapGenerator(String mode) {
         this.jf.setVisible(false);
-
+        JFrame m;
         r = jp1.getValue();
         c = jp2.getValue();
         nmin = jp3.getValue();
         s = jp4.getValue();
-
-        Mines m = new Mines(username, nmin, r, c,s,mode);
+        if(mode=="cg")
+            m = new CGFrame(username, nmin, r, c,s);
+        else
+            m = new Mines(username, nmin, r, c,s,mode);
         m.setVisible(true);
     }
     //Test
