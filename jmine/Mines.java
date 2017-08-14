@@ -41,7 +41,6 @@ public class Mines extends JFrame {
         if(mode=="square")
             myBoard = new Board(statusbar,username,nmin,row,col,t,small);
         else if(mode=="hexagon") {
-            //System.out.println( statusbar+" " +username +" "+ nmin+" " + row+" " + col+" "+ t+ small);
             myBoard = new HexBoard(statusbar, username, nmin, row, col, t, small);
         }
         //Top Menu
