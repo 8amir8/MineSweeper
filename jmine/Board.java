@@ -50,6 +50,7 @@ class Board extends JPanel {
     List<int[]> tempfield = new ArrayList<int[]>();// undo and redo field
     int ur = -1, state = 0; // ur is a temp variable to hold the state of the game & State is to hold the position of the game
     int small_mine_random[]=null; //randomly set the small mines in the field variable
+
     public Board(JLabel statusbar, String username, int nmin, int r, int c, time run,int smallmine) {
         N_SMALL_MINES = smallmine;
 
@@ -70,7 +71,7 @@ class Board extends JPanel {
         }
 
         setDoubleBuffered(true);
-
+        setOpaque(false);
         addMouseListener(new MinesAdapter());
         newGame();
 
@@ -306,10 +307,7 @@ class Board extends JPanel {
 
                     cell = field[(i * N_COLS) + j];
                     if (cell == COVERED_MINE_CELL||cell==SMALL_CELL) {
-
-                            //System.out.println(position(j, i)+"\t"+small_mine_random[position(j, i)]);
                         if(small_mine_random[position(j, i)]==1){// finding array of position of mines and small mines
-
                             cell=DRAW_SMALL_MINE_CELL;
                         }else{
                             cell = DRAW_MINE;
@@ -419,13 +417,7 @@ class Board extends JPanel {
         if (!isredoEnable()) {
             return;
         }
-        /*if (state == tempfield.size() - 1) {
-            field = copyarray(tempfield.get(state));
-            System.out.println("1");
-        } else {*/
-            field = copyarray(tempfield.get(state + 1));
-            //System.out.println("2");
-        //}
+        field = copyarray(tempfield.get(state + 1));
         state++;
         System.out.println("Repaint");
         repaint();
@@ -445,9 +437,12 @@ class Board extends JPanel {
 
             int x = e.getX();
             int y = e.getY();
-            if(G_MODE=="hexagon")
-            if((x / CELL_SIZE)%2==0)
-                y -= CELL_SIZE/2;
+
+            if(G_MODE=="hexagon"){
+                x-=3.5;
+                if((x / CELL_SIZE)%2==0)
+                    y -= CELL_SIZE/2+1;
+            }
 
             int cCol = x / CELL_SIZE;
             int cRow= y / CELL_SIZE;
@@ -461,7 +456,7 @@ class Board extends JPanel {
                 return;
             }
 
-            if(cCol>14||cRow>14){
+            if(cCol>N_COLS||cRow>N_ROWS){
                 refresh();
                 return;
             }                                     //prevent clicking out of board
@@ -602,11 +597,11 @@ class Board extends JPanel {
                     }
                 }
                 field = savedField;
-                //Load Mine orders
-                String x=vals[vals.length-2];
-                for(int h=0;h<small_mine_random.length;h++)
-                    small_mine_random[h]=Integer.parseInt(String.valueOf(x.charAt(h)));
-                System.out.println(Arrays.toString(small_mine_random));
+                //Load Mine orders-Some day i will unblock this part
+                //String x=vals[vals.length-2];
+                //for(int h=0;h<small_mine_random.length;h++)
+                //    small_mine_random[h]=Integer.parseInt(String.valueOf(x.charAt(h)));
+                //System.out.println(Arrays.toString(small_mine_random));
                 //
                 t.setStart(Integer.parseInt(vals[vals.length-1]));
                 this.setVisible(false);

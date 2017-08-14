@@ -9,7 +9,7 @@ public class HexBoard extends Board {
         super(statusbar, username, nmin, r, c, run, smallmine);
 
         img = new Image[NUM_IMAGES];
-        CELL_SIZE = 24;
+        CELL_SIZE = 23;
         G_MODE="hexagon";
         for (int i = 0; i < NUM_IMAGES; i++) {
             img[i] = (new ImageIcon("./img/HeX2/"+ i + ".png")).getImage();
