@@ -24,7 +24,7 @@ public class CGFrame extends JFrame {
 
         this.username=username;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(c*15+155, r*15+7); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
+        setSize(c*15+155, r*15+22); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
         setResizable(false);
         setLocationRelativeTo(null);
 
