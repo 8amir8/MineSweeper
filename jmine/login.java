@@ -13,15 +13,16 @@ public class login {
     JFrame jf = new JFrame("Mine Game");
     JPanel m = new JPanel(new GridLayout(6, 3, 5, 5));
     String username = "default";
-    int nmin = 40, r = 16, c = 16,s=3;
+    int nmin = 30, r = 16, c = 16,s=3;
     JComboBox jc;
-    JSlider jp1, jp2, jp3, jp4;
-    JLabel jl1, jl2, jl3, jl4;
+    JSlider jp1, jp2, jp3, jp4 ,jp5;
+    JLabel jl1, jl2, jl3, jl4,jl5;
     int num_min=225;
+    int cn=45;
 
     public login(){
         jf.setTitle("Enter to MineSweeper");
-        jf.setSize(500, 600);
+        jf.setSize(350, 300);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
         //phase-1
@@ -68,34 +69,29 @@ public class login {
     }
 
     public void menu(String mode ) {
-        JLabel l1 = new JLabel("  No of Rows");
-        JLabel l2 = new JLabel("  No of Columns");
-        JLabel l3 = new JLabel("  Number of ALL Mines");
-        JLabel l4 = new JLabel("  Number of Small Mines");
-        JLabel l5 = new JLabel("  Hardship of Game");
+        JLabel l1 = new JLabel("  No. Rows");
+        JLabel l2 = new JLabel("  No. Cols");
+        JLabel l3 = new JLabel("  No. allMines");
+        JLabel l4 = new JLabel("  No. sMines");
+        JLabel l5 = new JLabel("  Hardship:");
 
         if(mode=="cg")
         {
-            l3.setText("  Numer of Mines");
-            l4.setText("  Number of Colors");
+            l3.setText("  No. Mines");
+            l4.setText("  No. Colors");
+            l5.setText("  No. Conns");
         }
+        else {
+            jc = new JComboBox(new String[]{"Simple", "Intermediate", "Hard"});
+            jc.addActionListener(new ActionListener() {
 
-        //Hardship
-        jc = new JComboBox(new String[]{"Simple", "Intermediate", "Hard"});
-        jc.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jp3.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min));
-                jp4.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min)/3);
-                if(mode=="cg")
-                {
+                @Override
+                public void actionPerformed(ActionEvent e) {
                     jp3.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min));
-                    jp4.setValue( 2*(4-(jc.getSelectedIndex() + 1))+1 );
+                    jp4.setValue((jc.getSelectedIndex() + 1) * (int) sqrt(num_min) / 3);
                 }
-            }
-        });
-
+            });
+        }
         //line 1
         jp1 = new JSlider(5, 30, 15);
         jp1.addChangeListener(new ChangeListener() {
@@ -114,6 +110,10 @@ public class login {
                     jp3.setMaximum(num_min/2);
                     jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
                     jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                    num_min = jp1.getValue() * jp2.getValue();
+                    jl5.setText(jp3.getValue()+" : " + jp5.getValue() + " : " + num_min/2);
+                    jp5.setMaximum(num_min/2);
+                    jp5.setMinimum(jp3.getValue());
                 }
             }
         });
@@ -136,7 +136,10 @@ public class login {
                     jp3.setMaximum(num_min/2);
                     jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
                     jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
-                }
+                    num_min = jp1.getValue() * jp2.getValue();
+                    jl5.setText(jp3.getValue()+" : " + jp5.getValue() + " : " + num_min/2);
+                    jp5.setMaximum(num_min/2);
+                    jp5.setMinimum(jp3.getValue());                }
             }
         });
 
@@ -155,6 +158,10 @@ public class login {
                     jp3.setMaximum(num_min/2);
                     jl4.setText("1 : " + jp4.getValue() + " : " + Math.min(jp3.getValue(),15));
                     jp4.setMaximum(Math.min(jp3.getValue(),15));                                 //max colors we support
+                    num_min = jp1.getValue() * jp2.getValue();
+                    jl5.setText(jp3.getValue()+" : " + jp5.getValue() + " : " + num_min/2);
+                    jp5.setMaximum(num_min/2);
+                    jp5.setMinimum(jp3.getValue());
                 }
             }
         });
@@ -174,8 +181,22 @@ public class login {
             }
         });
 
+        //line5
+        if(mode=="cg") {
+            jp5 = new JSlider(jp3.getValue(), jp1.getValue() * jp2.getValue()/2, 45);
+            jp5.addChangeListener(new ChangeListener() {
+
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    num_min = jp1.getValue() * jp2.getValue();
+                    jl5.setText(jp3.getValue()+" : " + jp5.getValue() + " : " + num_min/2);
+                    jp5.setMaximum(num_min/2);
+                    jp5.setMinimum(jp3.getValue());
+                }
+            });
+        }
         //start button
-        JButton jb = new JButton("Start Game");
+        JButton jb = new JButton("Start!");
         jb.addActionListener(new ActionListener() {
 
             @Override
@@ -188,6 +209,7 @@ public class login {
         jl2 = new JLabel("5 : 15 : 30");
         jl3 = new JLabel("1 : 15 : " + num_min);
         jl4 = new JLabel("1 : 5 : 15");
+        jl5 = new JLabel("15 : 45 : "+ num_min/2);
 
         m.add(l1, 0);
         m.add(jp1, 1);
@@ -206,11 +228,18 @@ public class login {
         m.add(jl4, 11);
 
         m.add(l5, 12);
-        m.add(jc, 13);
-        m.add(new JLabel(), 14);
+        if(mode=="cg"){
+            m.add(jp5,13);
+            m.add(jl5,14);
+        }
+        else{
+            m.add(jc, 13);
+            m.add(new JLabel(), 14);
+        }
+
         m.add(new JLabel(), 15);
-        m.add(new JLabel(), 16);
-        m.add(jb, 17);
+        m.add(jb, 16);
+        m.add(new JLabel(), 17);
     }
 
     //generating map
@@ -221,8 +250,9 @@ public class login {
         c = jp2.getValue();
         nmin = jp3.getValue();
         s = jp4.getValue();
+        cn=jp5.getValue();
         if(mode=="cg")
-            m = new CGFrame(username, nmin, r, c,s);
+            m = new CGFrame(username, nmin, r, c,s,cn);
         else
             m = new Mines(username, nmin, r, c,s,mode);
         m.setVisible(true);

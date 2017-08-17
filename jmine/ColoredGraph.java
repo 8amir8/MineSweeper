@@ -9,40 +9,44 @@ import java.util.List;
 import java.util.Random;
 
 public class ColoredGraph extends JPanel{
-    public final int NUM_IMAGES = 16;
-    public final int COVER_FOR_CELL = 15;
-    public final int DRAW_COVER = 15;
+    private final int NUM_IMAGES = 16;
+    private final int COVER_FOR_CELL = 15;
+    private final int DRAW_COVER = 15;
 
-    public int N_MINES = 15;
-    public int N_ROWS = 15;
-    public int N_COLS = 15;
-    public int N_COLORS = 15;
-    public int DRAW_MINE = 0;
-    public int[][] mine_random;
+    private int N_MINES = 15;
+    private int N_ROWS = 15;
+    private int N_COLS = 15;
+    private int N_COLORS = 15;
+    private int DRAW_MINE = 0;
+    private int[][] mine_random;
 
-    public String username;
-    public int[] field;
-    public boolean inGame;
-    public Image[] img;
+    private String username;
+    private int[] field;
+    private boolean inGame;
+    private Image[] img;
 
-    public int CELL_SIZE = 15;
-    public String G_MODE = "cg";
+    private int CELL_SIZE = 15;
+    private String G_MODE = "cg";
 
-    public int all_cells;
-    public int pair;
+    private int all_cells;
+    private int connected;
+    private String[] setPairs;
+    private int pair;
 
     time runner; // reading the timer from time.java class
     boolean solving_mode = false;
     List<int[]> tempfield = new ArrayList<int[]>();// undo and redo field
     int ur = -1, state = 0; // ur is a temp variable to hold the state of the game & State is to hold the position of the game
 
-    public ColoredGraph(String username, int nmin, int r, int c, time run, int colors) {
+    public ColoredGraph(String username, int nmin, int r, int c, time run, int colors , int connected) {
         N_COLORS = colors;
         runner = run;
         N_MINES = nmin;
         N_ROWS = r;
         N_COLS = c;
         this.username = username;
+        this.connected = connected;
+        setPairs=new String[this.connected];
 
         img = new Image[NUM_IMAGES];
 
@@ -70,7 +74,7 @@ public class ColoredGraph extends JPanel{
 
         all_cells = N_ROWS * N_COLS;
         field = new int[all_cells];
-        mine_random = connection(all_cells);
+        mine_random = connection(all_cells,connected);
 
         i = 0;
         while (i < N_MINES) {
@@ -167,10 +171,10 @@ public class ColoredGraph extends JPanel{
         }
     }
 
-    public boolean isundoEnable() {
+    private boolean isundoEnable() {
         return state > 0;
     }
-    public boolean isredoEnable() {
+    private boolean isredoEnable() {
         return state < ur;
     }
     public void undo() {
@@ -204,7 +208,7 @@ public class ColoredGraph extends JPanel{
         //System.out.println("REDO\t" + ur + "\t" + state + "\t" + tempfield.size());
     }
 
-    public void setting(Graphics g, int i, int j, int cell) {  //real CELL_SIZE or best output?
+    private void setting(Graphics g, int i, int j, int cell) {  //real CELL_SIZE or best output?
         g.drawImage(img[cell], (j * CELL_SIZE), (i * CELL_SIZE), this);
     }
 
@@ -250,8 +254,8 @@ public class ColoredGraph extends JPanel{
 
                         if (checkMine((cRow * N_COLS) + cCol)) {
                             //add some game over
-                            JOptionPane.showMessageDialog(null,pair+ " Pairs:(" + pair/N_COLS+","+pair%N_COLS+") & ("+cCol+","+cRow+")","Bo0m!",1);
-                            JOptionPane.showMessageDialog(null,"\t\tSry mate , take care...\nyou cant respawn in real life","Game Over",2);
+                            runner.stoptime=true;
+                            JOptionPane.showMessageDialog(null,"Sry mate , take care...\nyou cant respawn in real life!\n#~> Pairs:(" + pair/N_COLS+","+pair%N_COLS+") & ("+cCol+","+cRow+")","Boom! Game Over",2);
                             inGame = false;
                             System.out.println("Mine exploded");
                         }
@@ -271,7 +275,7 @@ public class ColoredGraph extends JPanel{
         }
     }
 
-    public void fillTheMap(int i) {
+    private void fillTheMap(int i) {
         Random random = new Random();
         if(field[i]==0) {
             int image = (int) (N_COLORS*random.nextDouble()+1);
@@ -288,7 +292,7 @@ public class ColoredGraph extends JPanel{
         if(i<all_cells)
             fillTheMap(i);
     }
-    public boolean checkMine(int pos){
+    private boolean checkMine(int pos){
         for (int x=0;x<all_cells;x++) {
             if (mine_random[pos][x] == 2) {
                 if (mine_random[x][pos] == 2)
@@ -301,14 +305,14 @@ public class ColoredGraph extends JPanel{
         }
         return false;
     }
-    public int[] copyarray(int[] source) {
+    private int[] copyarray(int[] source) {
         int[] dest = new int[source.length];
         for (int i = 0; i < source.length; i++) {
             dest[i] = source[i];
         }
         return dest;
     }
-    public int[][] connection(int ac){
+    private int[][] connection(int ac,int cn){
 
         int[][] res=new int[ac][ac];
         for(int c=0; c<ac;c++){
@@ -316,7 +320,22 @@ public class ColoredGraph extends JPanel{
                 res[c][r] = 0;
             }
         }
-        for(int c=0;c<ac;c++) {
+        Random random=new Random();
+        int ix = 0;
+        while (ix < cn) {
+            //System.out.println(ix+"-"+cn);
+            int position1 = (int) (all_cells * random.nextDouble());
+            int position2 = (int) (all_cells * random.nextDouble());
+            if ((position1 < all_cells) && (position2 < all_cells) && (position1 != position2)) {
+                if (res[position1][position2] == 0 && res[position2][position1] == 0) {       //choose mine cells
+                    res[position2][position1]++;
+                    res[position1][position2]++;
+                    setPair(position1,position2,ix);
+                    ix++;
+                }
+            }
+        }
+        /*for(int c=0;c<ac;c++) {
             int x=0;
             for(int h=0;h<ac;h++)
                 x+=res[c][h];
@@ -331,12 +350,19 @@ public class ColoredGraph extends JPanel{
                     nc--;
                 }
             }
-        }
+        }*/
         return res;
     }
-    public void refresh(){
+    private void setPair(int a,int b , int index){
+        setPairs[index]="#"+(index+1)+":("+a/N_COLS+","+a%N_COLS+") & ("+b/N_COLS+","+b%N_COLS+")";
+        //if(mine_random[a/N_COLS][a%N_COLS]==-1&&mine_random[b/N_COLS][b%N_COLS]==-1);
+    }
+    public String getPair(int index){
+        return setPairs[index];
+    }
+    private void refresh(){
         setVisible(false);
         setVisible(true);
-        System.out.println("Refreshed");
+        //System.out.println("Refreshed");
     }
 }

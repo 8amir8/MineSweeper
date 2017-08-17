@@ -18,18 +18,18 @@ public class CGFrame extends JFrame {
     private String username="";
 
     //Top Menu requirement
-    public JMenuBar menuBar = new JMenuBar();
+    private JMenuBar menuBar = new JMenuBar();
 
-    public CGFrame(String username, int nmin, int r, int c, int color) {
+    public CGFrame(String username, int nmin, int r, int c, int color,int connected) {
 
         this.username=username;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(c*15+155, r*15+22); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
+        setSize(c*15+292, r*15+22); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
         setResizable(false);
         setLocationRelativeTo(null);
 
         //map
-            myBoard = new ColoredGraph(username, nmin, r, c, t, color);
+            myBoard = new ColoredGraph(username, nmin, r, c, t, color,connected);
         //Top Menu
 
         //one
@@ -131,6 +131,23 @@ public class CGFrame extends JFrame {
         add(menuBar, BorderLayout.NORTH);
         add(myBoard, BorderLayout.CENTER);
 
+        //add pairsPanel
+        List pPanel=new List(connected,false);
+
+        pPanel.setForeground(Color.LIGHT_GRAY);
+        pPanel.setBackground(Color.BLACK);
+        pPanel.setFont(new Font("Arial",Font.PLAIN,9));
+        pPanel.add("Pairs:(Col,Row)");
+        for(int k=0;k<connected;k++)
+            pPanel.add(myBoard.getPair(k));
+        //Create containing panel
+        JPanel west=new JPanel();
+        west.setLayout(new GridLayout(1,1));
+        west.setPreferredSize(new Dimension(140, 100));
+        west.add( pPanel,0);
+        //add containing east panel to page
+        add(west,BorderLayout.WEST);
+
         //east buttons
         //Index=1
         JButton b1=new JButton("New Game");
@@ -172,8 +189,7 @@ public class CGFrame extends JFrame {
         east.setLayout(new GridLayout(4, 1, 30, 0));
 
         //Index=0
-        east.add(ti,0);
-        Border border = BorderFactory.createLineBorder(Color.RED);
+        Border border = BorderFactory.createLineBorder(Color.GREEN,4);
         ti.setBorder(border);
         ti.setPreferredSize(new Dimension(150, 100)); // button panel size because of the timer size
         ti.setHorizontalAlignment(JLabel.CENTER);
@@ -181,6 +197,7 @@ public class CGFrame extends JFrame {
         runner.execute(t);
 
         //add other buttons we create
+        east.add(ti,0);
         east.add(b1,1);
         east.add(b3,2);
         east.add(b4,3);
@@ -189,7 +206,7 @@ public class CGFrame extends JFrame {
         add(east,BorderLayout.EAST);
     }
 
-    public static void exit(){
+    private static void exit(){
         System.exit(0);
     }
 }
