@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.Random;
 
 public class ColoredGraph extends JPanel{
-    private final int NUM_IMAGES = 16;
-    private final int COVER_FOR_CELL = 15;
-    private final int DRAW_COVER = 15;
+    private final int NUM_IMAGES = 18;
+    private final int COVER_FOR_CELL = 17;
+    private final int DRAW_COVER = 17;
 
     private int N_MINES = 15;
     private int N_ROWS = 15;
     private int N_COLS = 15;
     private int N_COLORS = 15;
     private int DRAW_MINE = 0;
+    private int DRAW_PAIR = 16;
     private int[][] mine_random;
 
     private String username;
@@ -144,9 +145,11 @@ public class ColoredGraph extends JPanel{
                 cell = field[(i * N_COLS) + j];
 
                 if (!inGame) {                                          //usage: End of the game : uncovering mines and mistakes
-                    if (checkMine((i * N_COLS) + j))             //#MINE#
+                    if (checkMine((i * N_COLS) + j)) {             //#MINE#
                         cell = DRAW_MINE;
-                    else if (cell > COVER_FOR_CELL) {
+                        if (mine_random[(i * N_COLS) + j][pair]==3)//ijkl
+                            cell=DRAW_PAIR;
+                    }else if (cell > COVER_FOR_CELL) {
                         cell -= DRAW_COVER;
                     }
                 }
@@ -255,7 +258,7 @@ public class ColoredGraph extends JPanel{
                         if (checkMine((cRow * N_COLS) + cCol)) {
                             //add some game over
                             runner.stoptime=true;
-                            JOptionPane.showMessageDialog(null,"Sry mate , take care...\nyou cant respawn in real life!\n#~> Pairs:(" + pair/N_COLS+","+pair%N_COLS+") & ("+cCol+","+cRow+")","Boom! Game Over",2);
+                            JOptionPane.showMessageDialog(null,"Sry mate , take care...\nyou cant respawn in real life!\n#~> Pairs:(" + pair/N_COLS+","+pair%N_COLS+") & ("+cRow+","+cCol+")","Boom! Game Over",2);
                             inGame = false;
                             System.out.println("Mine exploded");
                         }
@@ -301,6 +304,10 @@ public class ColoredGraph extends JPanel{
                     pair=x;
                     return true;
                 }
+            }
+            else if(mine_random[pos][x] == 3){//ijkl
+                pair=x;
+                return true;
             }
         }
         return false;

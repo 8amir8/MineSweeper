@@ -250,9 +250,10 @@ public class login {
         c = jp2.getValue();
         nmin = jp3.getValue();
         s = jp4.getValue();
-        cn=jp5.getValue();
-        if(mode=="cg")
-            m = new CGFrame(username, nmin, r, c,s,cn);
+        if(mode=="cg") {
+            cn = jp5.getValue();
+            m = new CGFrame(username, nmin, r, c, s, cn);
+        }
         else
             m = new Mines(username, nmin, r, c,s,mode);
         m.setVisible(true);

@@ -16,15 +16,19 @@ public class CGFrame extends JFrame {
     //global variables
     private ColoredGraph myBoard;
     private String username="";
-
+    private List pPanel;
+    private JPanel west;
+    private int connected;
     //Top Menu requirement
     private JMenuBar menuBar = new JMenuBar();
 
     public CGFrame(String username, int nmin, int r, int c, int color,int connected) {
 
         this.username=username;
+        this.connected=connected;
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(c*15+292, r*15+22); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
+        setSize(c*15+296, r*15+50); //Main Frame of the game include in Buttons and 67 is the size statusbar and JMenuBar
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -41,6 +45,7 @@ public class CGFrame extends JFrame {
             public void actionPerformed(ActionEvent e){
                 myBoard.newGame();
                 myBoard.repaint();
+                pPanelCreator();
                 t.restart();
                 runner.execute(t);
             }
@@ -132,16 +137,16 @@ public class CGFrame extends JFrame {
         add(myBoard, BorderLayout.CENTER);
 
         //add pairsPanel
-        List pPanel=new List(connected,false);
+        pPanel=new List(connected,false);
 
         pPanel.setForeground(Color.LIGHT_GRAY);
         pPanel.setBackground(Color.BLACK);
         pPanel.setFont(new Font("Arial",Font.PLAIN,9));
-        pPanel.add("Pairs:(Col,Row)");
+        pPanel.add("Pairs:(Row,Col)");
         for(int k=0;k<connected;k++)
             pPanel.add(myBoard.getPair(k));
         //Create containing panel
-        JPanel west=new JPanel();
+        west=new JPanel();
         west.setLayout(new GridLayout(1,1));
         west.setPreferredSize(new Dimension(140, 100));
         west.add( pPanel,0);
@@ -156,6 +161,7 @@ public class CGFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 myBoard.newGame();
                 myBoard.repaint();
+                pPanelCreator();
                 t.restart();
                 runner.execute(t);
             }
@@ -204,6 +210,15 @@ public class CGFrame extends JFrame {
 
         //add containing east panel to page
         add(east,BorderLayout.EAST);
+    }
+
+    private void pPanelCreator(){
+        west.remove(pPanel);//remove last item from west
+        pPanel.removeAll();//delete list items
+        pPanel.add("Pairs:(Row,Col)");
+        for(int k=0;k<connected;k++)
+            pPanel.add(myBoard.getPair(k));
+        west.add( pPanel,0);
     }
 
     private static void exit(){
