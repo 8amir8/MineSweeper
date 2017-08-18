@@ -561,7 +561,7 @@ class Board extends JPanel {
         mycontent+=mo+" "+t.getStart();//++
         try {
             System.out.println("Save file: " + username);
-            File file = new File("users" +File.separator+ username + ".txt");
+            File file = new File("./users" +File.separator+ username + ".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -586,7 +586,7 @@ class Board extends JPanel {
         BufferedReader br = null;
         String sCurrentLine;
         try {
-            br = new BufferedReader(new FileReader("users"+File.separator + username + ".txt"));
+            br = new BufferedReader(new FileReader("./users"+File.separator + username + ".txt"));
             while ((sCurrentLine = br.readLine()) != null) {
                 String[] vals = sCurrentLine.split(" ");
                 int[] savedField = new int[vals.length-2];//++

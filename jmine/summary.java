@@ -17,7 +17,7 @@ public class summary {
         List<String> sort=new ArrayList<String>();
         String result = "Final result of old games:(username,timelaps,mode)\n";
         try {
-            br = new BufferedReader(new FileReader("summary.txt"));
+            br = new BufferedReader(new FileReader("./summary.txt"));
             while ((sCurrentLine = br.readLine()) != null) {
 
                 if (sCurrentLine.length() > 0) {
@@ -71,7 +71,7 @@ public class summary {
         BufferedReader br = null;
         String sCurrentLine;
         try {
-            br = new BufferedReader(new FileReader("summary.txt"));
+            br = new BufferedReader(new FileReader("./summary.txt"));
             int linenumber = 0;
             while ((sCurrentLine = br.readLine()) != null) {
 
@@ -102,7 +102,7 @@ public class summary {
         BufferedReader br = null;
         String sCurrentLine;
         try {
-            br = new BufferedReader(new FileReader("summary.txt"));
+            br = new BufferedReader(new FileReader("./summary.txt"));
             int linenumber = 0;
             while ((sCurrentLine = br.readLine()) != null) {
 
@@ -134,14 +134,14 @@ public class summary {
         BufferedWriter bw = null;
 
         try {
-            File f=new File("summary.txt");
+            File f=new File("./summary.txt");
             if(f.exists()){
                 f.delete();
                 f.createNewFile();
             }else{
                 f.createNewFile();
             }
-            FileWriter fw = new FileWriter("summary.txt",true);
+            FileWriter fw = new FileWriter("./summary.txt",true);
             bw = new BufferedWriter(fw);
 
             bw.write(summary);
