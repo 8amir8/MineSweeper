@@ -134,7 +134,8 @@ public class CGFrame extends JFrame {
         //page config
         setTitle("Soldier "+ username);
         add(menuBar, BorderLayout.NORTH);
-        add(myBoard, BorderLayout.CENTER);
+        myBoard.setPreferredSize(new Dimension(c*15,r*15));
+        add(myBoard, BorderLayout.WEST);
 
         //add pairsPanel
         pPanel=new List(connected,false);
@@ -149,9 +150,10 @@ public class CGFrame extends JFrame {
         west=new JPanel();
         west.setLayout(new GridLayout(1,1));
         west.setPreferredSize(new Dimension(140, 100));
+        west.setSize(new Dimension(140,r*15));
         west.add( pPanel,0);
         //add containing east panel to page
-        add(west,BorderLayout.WEST);
+        add(west,BorderLayout.EAST);
 
         //east buttons
         //Index=1
@@ -197,7 +199,7 @@ public class CGFrame extends JFrame {
         //Index=0
         Border border = BorderFactory.createLineBorder(Color.GREEN,4);
         ti.setBorder(border);
-        ti.setPreferredSize(new Dimension(150, 100)); // button panel size because of the timer size
+        ti.setPreferredSize(new Dimension(150, r*15)); // button panel size because of the timer size
         ti.setHorizontalAlignment(JLabel.CENTER);
         ti.setVerticalAlignment(JLabel.CENTER);
         runner.execute(t);
@@ -209,7 +211,7 @@ public class CGFrame extends JFrame {
         east.add(b4,3);
 
         //add containing east panel to page
-        add(east,BorderLayout.EAST);
+        add(east,BorderLayout.CENTER);
     }
 
     private void pPanelCreator(){
