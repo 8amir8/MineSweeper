@@ -31,7 +31,7 @@ public class ColoredGraph extends JPanel{
 
     private int all_cells;
     private int connected;
-    private String[] setPairs;
+    private StringX[] setPairs;
     private int pair;
 
     time runner; // reading the timer from time.java class
@@ -47,7 +47,7 @@ public class ColoredGraph extends JPanel{
         N_COLS = c;
         this.username = username;
         this.connected = connected;
-        setPairs=new String[this.connected];
+        setPairs=new StringX[this.connected];
 
         img = new Image[NUM_IMAGES];
 
@@ -87,6 +87,7 @@ public class ColoredGraph extends JPanel{
                     field[position2] = field[position1];
                     mine_random[position1][position2]++;
                     mine_random[position2][position1]++;
+                    defIsBomb(position1,position2);
                     i++;
                 }
             }
@@ -361,11 +362,23 @@ public class ColoredGraph extends JPanel{
         return res;
     }
     private void setPair(int a,int b , int index){
-        setPairs[index]="#"+(index+1)+":("+a/N_COLS+","+a%N_COLS+") & ("+b/N_COLS+","+b%N_COLS+")";
+        setPairs[index]=new StringX();
+        setPairs[index].str="#"+(index+1)+":("+a/N_COLS+","+a%N_COLS+") & ("+b/N_COLS+","+b%N_COLS+")";
+        setPairs[index].id=a*1000+b;
         //if(mine_random[a/N_COLS][a%N_COLS]==-1&&mine_random[b/N_COLS][b%N_COLS]==-1);
     }
-    public String getPair(int index){
-        return setPairs[index];
+    public String getPair(int index,boolean show){
+        if(!setPairs[index].isBomb && show)
+            return "#~No Bombs here";
+        return setPairs[index].str;
+    }
+    private void defIsBomb(int a,int b){
+        for (StringX xx:setPairs){
+            if ((xx.id == ((a * 1000) + b) || xx.id == (b * 1000) + a)) {
+                xx.isBomb = true;
+                return;
+            }
+        }
     }
     private void refresh(){
         setVisible(false);

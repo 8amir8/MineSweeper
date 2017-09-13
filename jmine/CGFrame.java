@@ -45,9 +45,17 @@ public class CGFrame extends JFrame {
             public void actionPerformed(ActionEvent e){
                 myBoard.newGame();
                 myBoard.repaint();
-                pPanelCreator();
+                pPanelCreator(false);
                 t.restart();
                 runner.execute(t);
+            }
+        });
+        JMenuItem mainMenu = new JMenuItem("Main Menu");
+        file.add(mainMenu);
+        mainMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                setVisible(false);
+                login b2m = new login(1);
             }
         });
         JMenuItem exit = new JMenuItem("Exit");
@@ -82,6 +90,7 @@ public class CGFrame extends JFrame {
         solution.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 myBoard.solve();
+                pPanelCreator(true);
                 t.stop();
             }
         });
@@ -140,12 +149,12 @@ public class CGFrame extends JFrame {
         //add pairsPanel
         pPanel=new List(connected,false);
 
-        pPanel.setForeground(Color.LIGHT_GRAY);
-        pPanel.setBackground(Color.BLACK);
+        pPanel.setForeground(Color.BLACK);
+        pPanel.setBackground(Color.LIGHT_GRAY);
         pPanel.setFont(new Font("Arial",Font.PLAIN,9));
         pPanel.add("Pairs:(Row,Col)");
         for(int k=0;k<connected;k++)
-            pPanel.add(myBoard.getPair(k));
+            pPanel.add(myBoard.getPair(k,false));
         //Create containing panel
         west=new JPanel();
         west.setLayout(new GridLayout(1,1));
@@ -163,7 +172,7 @@ public class CGFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 myBoard.newGame();
                 myBoard.repaint();
-                pPanelCreator();
+                pPanelCreator(false);
                 t.restart();
                 runner.execute(t);
             }
@@ -178,6 +187,7 @@ public class CGFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myBoard.solve();
+                pPanelCreator(true);
                 t.stop();
             }
         });
@@ -214,12 +224,12 @@ public class CGFrame extends JFrame {
         add(east,BorderLayout.CENTER);
     }
 
-    private void pPanelCreator(){
+    private void pPanelCreator(boolean show){
         west.remove(pPanel);//remove last item from west
         pPanel.removeAll();//delete list items
         pPanel.add("Pairs:(Row,Col)");
         for(int k=0;k<connected;k++)
-            pPanel.add(myBoard.getPair(k));
+            pPanel.add(myBoard.getPair(k,show));
         west.add( pPanel,0);
     }
 

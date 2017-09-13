@@ -58,6 +58,14 @@ public class Mines extends JFrame {
                     runner.execute(t);
                 }
             });
+            JMenuItem mainMenu = new JMenuItem("Main Menu");
+            file.add(mainMenu);
+            mainMenu.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    setVisible(false);
+                    login b2m = new login(1);
+                }
+            });
             JMenuItem load = new JMenuItem("Load");
             file.add(load);
             load.addActionListener(new ActionListener(){

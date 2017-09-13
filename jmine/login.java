@@ -13,37 +13,38 @@ public class login {
     JFrame jf = new JFrame("Mine Game");
     JPanel m = new JPanel(new GridLayout(6, 3, 5, 5));
     String username = "default";
-    int nmin = 30, r = 16, c = 16,s=3;
+    int nmin,r,c,s;
     JComboBox jc;
     JSlider jp1, jp2, jp3, jp4 ,jp5;
     JLabel jl1, jl2, jl3, jl4,jl5;
     int num_min=225;
     int cn=45;
 
-    public login(){
+    public login(int run){
         jf.setTitle("Enter to MineSweeper");
         jf.setSize(350, 300);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
-        //phase-1
-        Object[] options = {"I Agree", "I don't Agree!"};
-        int n = JOptionPane.showOptionDialog(null,
-                "Arvin & Shervin Entertainment is not responsible for any damages caused by explosions",
-                "A & S Entertainment",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null,
-                options,
-                options[1]);
-        //phase-2
-        String dialogText = "Input Username";
-        if (n == JOptionPane.YES_OPTION) {
-            do {
-                username = JOptionPane.showInputDialog(null, dialogText, null, JOptionPane.INFORMATION_MESSAGE);
-                dialogText = "Input valid Username!... Please";
-            } while (username.equals(""));
-        }
-        else{
-            System.exit(0);
+        if(run==0) {
+            //phase-1
+            Object[] options = {"I Agree", "I don't Agree!"};
+            int n = JOptionPane.showOptionDialog(null,
+                    "Arvin & Shervin Entertainment is not responsible for any damages caused by explosions",
+                    "A & S Entertainment",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null,
+                    options,
+                    options[1]);
+            //phase-2
+            String dialogText = "Input Username";
+            if (n == JOptionPane.YES_OPTION) {
+                do {
+                    username = JOptionPane.showInputDialog(null, dialogText, null, JOptionPane.INFORMATION_MESSAGE);
+                    dialogText = "Input valid Username!... Please";
+                } while (username.equals(""));
+            } else {
+                System.exit(0);
+            }
         }
         //phase-3
         Object[] modes = {"Square", "Hex" , "ColoredGraph"};
@@ -260,7 +261,7 @@ public class login {
     }
     //Test
     public static void main(String a[]) {
-        login mnm = new login();
+        login mnm = new login(0);
 
     }
 }
